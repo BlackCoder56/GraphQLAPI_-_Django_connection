@@ -77,7 +77,7 @@ class UpdateEmployee(graphene.relay.ClientIDMutation):
         employee = Employee.objects.get(pk=from_global_id(input.get('id'))[1])
         # Update the employee's fields with the provided inputs
         employee.employee_name = input.get('employee_name')
-        employee.employee_city = City.objects.get(city_name=input.get('employee_cit'))  # Retrieve the City instance
+        employee.employee_city = City.objects.get(city_name=input.get('employee_city'))  # Retrieve the City instance
         employee.employee_title = Title.objects.get(title_name=input.get('employee_title'))  # Retrieve the Title instance
         employee.save()  # Save the updated employee to the database
         return UpdateEmployee(employee=employee)  # Return the updated EmployeeNode
