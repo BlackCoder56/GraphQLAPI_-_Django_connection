@@ -37,8 +37,8 @@ NB: You can follow steps in this file to get more knowledge on how to create the
         $ mkdir frontend backend
 
 ##  Step 2: Setting up the Backend
-**Creating the Django Project**
-**             - First navigate to the backend folder: **
+**Creating the Django Project:**
+            - First navigate to the backend folder;
 
        ```bash
        $ cd backend
