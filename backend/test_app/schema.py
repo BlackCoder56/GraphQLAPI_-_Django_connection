@@ -81,6 +81,24 @@ class UpdateEmployee(graphene.relay.ClientIDMutation):
         employee.employee_title = Title.objects.get(title_name=input.get('employee_title'))  # Retrieve the Title instance
         employee.save()  # Save the updated employee to the database
         return UpdateEmployee(employee=employee)  # Return the updated EmployeeNode
+    
+class DeleteEmployee(graphene.relay.ClientIDMutation):
+    # This field will return the deleted EmployeeNode
+    employee = graphene.Field(EmployeeNode)
+
+    class Input:
+        # Input field to accept the global ID of the employee to be deleted
+        id = graphene.String()
+
+    def mutate_and_get_payload(root, info, **input):
+        # Retrieve the Employee instance by decoding the global ID to the primary key
+        employee = Employee.objects.get(
+            pk=from_global_id(input.get('id'))[1]
+        )
+        # Delete the retrieved employee instance from the database
+        employee.delete()
+        # Return the deleted EmployeeNode (even though it no longer exists in the database)
+        return DeleteEmployee(employee=employee)
 
 # Query class to define all available queries
 class Query(object):
@@ -93,6 +111,7 @@ class Query(object):
 
 # Mutation class to define all available mutations
 class Mutation(graphene.ObjectType):
-    create_title = CreateTitle.Field()  # Mutation to create a new title
-    create_employee = CreateEmployee.Field()  # Mutation to create a new employee
-    update_employee = UpdateEmployee.Field() # Mutation to update existing employee
+    create_title = CreateTitle.Field()          # Mutation to create a new title
+    create_employee = CreateEmployee.Field()    # Mutation to create a new employee
+    update_employee = UpdateEmployee.Field()    # Mutation to update existing employee
+    delete_employee = DeleteEmployee.Field()    # Mutation to delete existing employee
